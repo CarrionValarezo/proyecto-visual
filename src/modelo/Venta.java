@@ -7,7 +7,6 @@ package modelo;
 
 /**
  *
- * @author Alejandro
  */
 public class Venta {
     

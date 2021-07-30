@@ -38,7 +38,6 @@ import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
- * @author Alejandro
  */
 public class Menu extends javax.swing.JFrame {
 

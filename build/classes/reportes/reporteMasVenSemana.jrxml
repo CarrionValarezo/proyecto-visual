@@ -7,6 +7,7 @@ from productos p, detalle_ventas dv, ventas v
 where p.id_pro = dv.id_pro_per
 and v.num_fac = dv.num_fac_per
 and week(v.fec_ven) = week($P{fecha})
+and v.est_ven = 'COMPLETADO'
 group by dv.id_pro_per
 order by sum(dv.can_pro) desc;]]>
 	</queryString>
@@ -52,28 +53,28 @@ order by sum(dv.can_pro) desc;]]>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[id_pro]]></text>
+				<text><![CDATA[ID]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="138" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[cod_bar_pro]]></text>
+				<text><![CDATA[CODIGO DE BARRAS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="276" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[nom_pro]]></text>
+				<text><![CDATA[NOMBRE]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="414" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[can_ven]]></text>
+				<text><![CDATA[CANTIDAD DE VENTAS]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

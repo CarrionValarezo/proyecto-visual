@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Alejandro
  */
 public class DatosVenta {
 

@@ -19,7 +19,6 @@ import net.sourceforge.jbarcodebean.model.Interleaved25;
 
 /**
  *
- * @author Alejandro
  */
 public class Productos extends javax.swing.JInternalFrame {
 
