@@ -76,15 +76,19 @@ public class Categorias extends javax.swing.JInternalFrame {
 
         if (opc == 0) {
 
-            cat.setId(Integer.valueOf(jTxtIdCategoria.getText()));
-            cat.setEstado("INACTIVO");
-            categoria.eliminar(cat);
+            if (categoria.categoriaVerificador(jTxtIdCategoria.getText()) == 0) {
+                cat.setId(Integer.valueOf(jTxtIdCategoria.getText()));
+                cat.setEstado("INACTIVO");
+                categoria.eliminar(cat);
 
-            limpiarCampos();
-            limpiarTabla();
-            listarCategoria();
-            bloquearBotones();
-            bloquearCampos();
+                limpiarCampos();
+                limpiarTabla();
+                listarCategoria();
+                bloquearBotones();
+                bloquearCampos();
+            } else {
+                JOptionPane.showMessageDialog(null, "No se puede eliminar una categoria con productos activos", "Aviso", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 

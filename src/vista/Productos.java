@@ -45,10 +45,10 @@ public class Productos extends javax.swing.JInternalFrame {
             pro.setNombre(jTxtNombreProducto.getText());
             pro.setPrecio(Float.valueOf(jTxtPrecioProducto.getText()));
             pro.setCantidad(Integer.valueOf(jTxtCantidadProducto.getText()));
-            if (!jTxtDescripcionProducto.getText().equals("")) {
-                pro.setDescripcion(jTxtDescripcionProducto.getText());
-            } else {
+            if ("".equals(jTxtDescripcionProducto.getText())) {
                 pro.setDescripcion("SIN DESCRIPCIÓN");
+            } else {
+                pro.setDescripcion(jTxtDescripcionProducto.getText());
             }
             pro.setEstado("ACTIVO");
             if (categoria.charAt(1) == '.') {
@@ -78,7 +78,12 @@ public class Productos extends javax.swing.JInternalFrame {
             pro.setNombre(jTxtNombreProducto.getText());
             pro.setPrecio(Float.valueOf(jTxtPrecioProducto.getText()));
             pro.setCantidad(Integer.valueOf(jTxtCantidadProducto.getText()));
-            pro.setDescripcion(jTxtDescripcionProducto.getText());
+            if ("".equals(jTxtDescripcionProducto.getText())) {
+                pro.setDescripcion("SIN DESCRIPCIÓN");
+            } else {
+                pro.setDescripcion(jTxtDescripcionProducto.getText());
+            }
+            
             pro.setCategoria(jCbxCategoriaProducto.getSelectedIndex());
 
             producto.actualizar(pro);
@@ -416,8 +421,7 @@ public class Productos extends javax.swing.JInternalFrame {
 
         jTxtDescripcionProducto.setColumns(20);
         jTxtDescripcionProducto.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jTxtDescripcionProducto.setTabSize(0);
-        jTxtDescripcionProducto.setAutoscrolls(false);
+        jTxtDescripcionProducto.setRows(5);
         jTxtDescripcionProducto.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jTxtDescripcionProducto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {

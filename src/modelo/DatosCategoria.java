@@ -94,6 +94,24 @@ public class DatosCategoria {
         }
     }
     
+    public int categoriaVerificador(String id){
+        int idPro = 0;
+        String sql = "SELECT ID_PRO FROM PRODUCTOS WHERE ID_CAT_PER=? AND EST_PRO='ACTIVO'";
+        
+        try {
+            con = cn.conectar();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                idPro = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return idPro;
+    }
+    
     public List buscar(int id){
         
         List <Categoria> ListarCat = new ArrayList();

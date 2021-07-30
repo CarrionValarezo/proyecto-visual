@@ -20,15 +20,15 @@ import javax.swing.JOptionPane;
  * @author Alejandro
  */
 public class DatosVenta {
-    
+
     Icon icono = new ImageIcon(getClass().getResource("/imagenes/correcto.png"));
     Connection con;
     Conexion cn = new Conexion();
     PreparedStatement ps;
     ResultSet rs;
     int r;
-    
-    public boolean insertar(Venta venta){ 
+
+    public boolean insertar(Venta venta) {
         String sql = "INSERT INTO VENTAS (CED_USU_PER, ID_CLI_PER, MET_PAG_VEN, TOT_VEN, EST_VEN) VALUES (?, ?, ?, ?, ?)";
         try {
             con = cn.conectar();
@@ -52,8 +52,8 @@ public class DatosVenta {
             }
         }
     }
-    
-    public int numeroVenta(){
+
+    public int numeroVenta() {
         int numero = 0;
         String sql = "SELECT MAX(NUM_FAC) FROM VENTAS";
         try {
@@ -68,12 +68,12 @@ public class DatosVenta {
         }
         return numero;
     }
-    
-    public String buscarCliente(String cedula){
+
+    public String buscarCliente(String cedula) {
         String nombre = "";
         String apellido = "";
         String sql = "SELECT NOM_CLI, APE_CLI FROM CLIENTES WHERE ID_CLI=?";
-        
+
         try {
             con = cn.conectar();
             ps = con.prepareStatement(sql);
@@ -86,13 +86,13 @@ public class DatosVenta {
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
-        return nombre+" "+apellido;
+        return nombre + " " + apellido;
     }
-    
-    public String buscarNombreProducto(String codigo){
+
+    public String buscarNombreProducto(String codigo) {
         String nombre = "";
         String sql = "SELECT NOM_PRO FROM PRODUCTOS WHERE COD_BAR_PRO=? AND EST_PRO='ACTIVO'";
-        
+
         try {
             con = cn.conectar();
             ps = con.prepareStatement(sql);
@@ -106,11 +106,39 @@ public class DatosVenta {
         }
         return nombre;
     }
-    
-    public float buscarPrecioProducto(String codigo){
+
+    public List listar(String estado) {
+
+        List<Venta> ListarVen = new ArrayList();
+        String sql = "SELECT * FROM VENTAS WHERE EST_VEN=?";
+
+        try {
+            con = cn.conectar();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, estado);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Venta venta = new Venta();
+                venta.setId(rs.getString("NUM_FAC"));
+                venta.setCedulaCajero(rs.getString("CED_USU_PER"));
+                venta.setCedulaCliente(rs.getString("ID_CLI_PER"));
+                venta.setFecha(rs.getString("FEC_VEN"));
+                venta.setMetodo(rs.getString("MET_PAG_VEN"));
+                venta.setTotal(rs.getFloat("TOT_VEN"));
+                venta.setEstado(rs.getString("EST_VEN"));
+                ListarVen.add(venta);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return ListarVen;
+    }
+
+    public float buscarPrecioProducto(String codigo) {
         float precio = 0;
         String sql = "SELECT PRE_PRO FROM PRODUCTOS WHERE COD_BAR_PRO=? AND EST_PRO='ACTIVO'";
-        
+
         try {
             con = cn.conectar();
             ps = con.prepareStatement(sql);
@@ -124,11 +152,29 @@ public class DatosVenta {
         }
         return precio;
     }
+
+    public int buscarStockProducto2(int codigo) {
+        int stock = 0;
+        String sql = "SELECT CAN_PRO FROM PRODUCTOS WHERE ID_PRO=?";
+
+        try {
+            con = cn.conectar();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, codigo);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                stock = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return stock;
+    }
     
-    public int buscarStockProducto(String codigo){
+    public int buscarStockProducto(String codigo) {
         int stock = 0;
         String sql = "SELECT CAN_PRO FROM PRODUCTOS WHERE COD_BAR_PRO=? AND EST_PRO='ACTIVO'";
-        
+
         try {
             con = cn.conectar();
             ps = con.prepareStatement(sql);
@@ -142,29 +188,29 @@ public class DatosVenta {
         }
         return stock;
     }
-    
-    public int buscarIdProducto(String codigo){
+
+    public int buscarIdProducto(String codigo) {
         int id = 0;
         String sql = "SELECT ID_PRO FROM PRODUCTOS WHERE COD_BAR_PRO=?";
-        
+
         try {
             con = cn.conectar();
             ps = con.prepareStatement(sql);
             ps.setString(1, codigo);
             rs = ps.executeQuery();
             if (rs.next()) {
-                id= rs.getInt(1);
+                id = rs.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
         return id;
     }
-    
-    public String estadoCliente(String cedula){
+
+    public String estadoCliente(String cedula) {
         String estado = "";
         String sql = "SELECT EST_CLI FROM CLIENTES WHERE ID_CLI=?";
-        
+
         try {
             con = cn.conectar();
             ps = con.prepareStatement(sql);
@@ -178,24 +224,39 @@ public class DatosVenta {
         }
         return estado;
     }
-    
-    public void activarCliente(String cedula){
+
+    public void activarCliente(String cedula) {
         String sql = "UPDATE CLIENTES SET EST_CLI=? WHERE ID_CLI=?";
-        try{
+        try {
             ps = con.prepareStatement(sql);
             ps.setString(1, "ACTIVO");
             ps.setString(2, cedula);
             ps.execute();
             JOptionPane.showMessageDialog(null, "Cliente Activo", "Aviso", JOptionPane.PLAIN_MESSAGE, icono);
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.toString());
-        }finally{
-            try{
+        } finally {
+            try {
                 con.close();
-            }catch(SQLException e){
+            } catch (SQLException e) {
                 System.out.println(e.toString());
             }
         }
     }
-    
+
+    public boolean anular(Venta venta) {
+        String sql = "UPDATE VENTAS SET EST_VEN=? WHERE NUM_FAC=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, "ANULADO");
+            ps.setString(2, venta.getId());
+            ps.execute();
+            JOptionPane.showMessageDialog(null, "Venta Anulada", "Aviso", JOptionPane.PLAIN_MESSAGE, icono);
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }
+    }
+
 }

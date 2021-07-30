@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -65,7 +67,7 @@ public class DatosDetalleVenta {
         return id;
     }
 
-    public boolean reducirStock(int cantidad, int id) {
+    public boolean modificarStock(int cantidad, int id) {
         String sql = "UPDATE PRODUCTOS SET CAN_PRO=? WHERE ID_PRO=?";
 
         try {
@@ -77,13 +79,51 @@ public class DatosDetalleVenta {
             }catch(SQLException e){
             System.out.println(e.toString());
         }finally{
-            try{
-                con.close();
-            }catch(SQLException e){
-                System.out.println(e.toString());
-            }
+
         }
         return true;
+    }
+    
+    public List productosDevolucion(String id){
+       
+        List <DetalleVenta> ListarDetVen = new ArrayList();
+        String sql = "SELECT ID_PRO_PER, CAN_PRO FROM DETALLE_VENTAS WHERE NUM_FAC_PER=?";
+        
+        try{
+            con = cn.conectar();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                DetalleVenta detventa = new DetalleVenta();
+                detventa.setIdProducto(rs.getInt("ID_PRO_PER"));
+                detventa.setCantidad(rs.getInt("CAN_PRO"));
+                ListarDetVen.add(detventa);
+            }
+        }catch(SQLException e){
+            System.out.println(e.toString());
+        }
+        return ListarDetVen;
+    }
+    
+    public int cantidadProductosVenta(String id){
+        String sql = "SELECT COUNT(ID_PRO_PER) FROM DETALLE_VENTAS WHERE NUM_FAC_PER=?";
+        int canti = 0;
+
+        try {
+            con = cn.conectar();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                canti = rs.getInt("COUNT(ID_PRO_PER)");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return canti;
     }
 
 }

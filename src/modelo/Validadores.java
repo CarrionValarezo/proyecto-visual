@@ -96,4 +96,18 @@ public class Validadores {
         return false;
     }
 
+    public String cambiarComa(String dato){
+        String cadena = "";
+        
+        for (int i = 0; i < dato.length(); i++) {
+            char c = dato.charAt(i);
+            if (c == ','){
+                cadena = cadena + ".";
+            } else {
+                cadena = cadena + c;
+            }
+        }
+        return cadena;
+    }
+
 }

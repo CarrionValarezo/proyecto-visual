@@ -213,6 +213,7 @@ public class Menu extends javax.swing.JFrame {
         });
         jMnuReportes.add(jMnuReporteStock);
 
+        jMnuReporteMasVendidos.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMnuReporteMasVendidos.setText("REPORTE MAS VENDIDOS");
         jMnuReporteMasVendidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,6 +222,7 @@ public class Menu extends javax.swing.JFrame {
         });
         jMnuReportes.add(jMnuReporteMasVendidos);
 
+        jMnuMasVenSemana.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMnuMasVenSemana.setText("REPORTE MAS VENDIDOS POR SEMANA");
         jMnuMasVenSemana.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
