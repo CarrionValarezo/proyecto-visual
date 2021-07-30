@@ -15,7 +15,6 @@ import modelo.Validadores;
 
 /**
  *
- * @author Alejandro
  */
 public class Clientes extends javax.swing.JInternalFrame {
 

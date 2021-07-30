@@ -17,7 +17,6 @@ import modelo.Validadores;
 
 /**
  *
- * @author Alejandro
  */
 public class Usuarios extends javax.swing.JInternalFrame {
 

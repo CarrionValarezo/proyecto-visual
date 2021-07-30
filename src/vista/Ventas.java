@@ -24,7 +24,6 @@ import modelo.login;
 
 /**
  *
- * @author Alejandro
  */
 public class Ventas extends javax.swing.JInternalFrame {
 

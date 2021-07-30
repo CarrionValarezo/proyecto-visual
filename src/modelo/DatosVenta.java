@@ -18,7 +18,6 @@ import vista.Login;
 
 /**
  *
- * @author Alejandro
  */
 public class DatosVenta {
 

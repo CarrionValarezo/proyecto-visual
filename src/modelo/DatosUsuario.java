@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Alejandro
  */
 public class DatosUsuario {
     

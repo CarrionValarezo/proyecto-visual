@@ -14,7 +14,6 @@ import modelo.DatosCategoria;
 
 /**
  *
- * @author Alejandro
  */
 public class Categorias extends javax.swing.JInternalFrame {
 
