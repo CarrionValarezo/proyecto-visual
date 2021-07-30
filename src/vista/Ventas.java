@@ -214,20 +214,24 @@ public class Ventas extends javax.swing.JInternalFrame {
     }
 
     public void anularVenta() {
-        Object id = jTblVentasCajero.getValueAt(jTblVentasCajero.getSelectedRow(), 0).toString();
-        List<DetalleVenta> ListarDetVen = detven.productosDevolucion((String) id);
+        int opc = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea anular la venta?", "Confirmar anulación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-        for (int i = 0; i < detven.cantidadProductosVenta((String) id); i++) {
-            int idAux = Integer.valueOf(ListarDetVen.get(i).getIdProducto());
-            int canAux = Integer.valueOf(ListarDetVen.get(i).getCantidad());
-            int stockAct = Integer.valueOf(venta.buscarStockProducto2(idAux));
+        if (opc == 0) {
+            Object id = jTblVentasCajero.getValueAt(jTblVentasCajero.getSelectedRow(), 0).toString();
+            List<DetalleVenta> ListarDetVen = detven.productosDevolucion((String) id);
 
-            detven.modificarStock((stockAct+canAux), (int) idAux);
+            for (int i = 0; i < detven.cantidadProductosVenta((String) id); i++) {
+                int idAux = Integer.valueOf(ListarDetVen.get(i).getIdProducto());
+                int canAux = Integer.valueOf(ListarDetVen.get(i).getCantidad());
+                int stockAct = Integer.valueOf(venta.buscarStockProducto2(idAux));
+
+                detven.modificarStock((stockAct + canAux), (int) idAux);
+            }
+            ven.setId((String) id);
+            venta.anular(ven);
+            limpiarTablaVentas();
+            listarVentas();
         }
-        ven.setId((String) id);
-        venta.anular(ven);
-        limpiarTablaVentas();
-        listarVentas();
     }
 
     public void numeroVenta() {
@@ -301,6 +305,8 @@ public class Ventas extends javax.swing.JInternalFrame {
             if (!jLblPrecioProducto.getText().equals("")) {
                 jTxtCantidad.setText("1");
                 jBtnAgregar.setEnabled(true);
+                jTxtCodigoProducto.setEnabled(false);
+                jBtnBuscarProducto.setEnabled(false);
             }
         } else {
             jBtnAgregar.setEnabled(false);
@@ -380,6 +386,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         jBtnBuscarCedula.setEnabled(false);
         jBtnBuscarProducto.setEnabled(false);
         jBtnGuardar.setEnabled(false);
+        jBtnAnular.setEnabled(false);
     }
 
     public void bloquearCampos() {
@@ -771,6 +778,11 @@ public class Ventas extends javax.swing.JInternalFrame {
                 "N° VENTA", "CLIENTE", "FECHA", "PAGO", "TOTAL", "ESTADO"
             }
         ));
+        jTblVentasCajero.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTblVentasCajeroMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTblVentasCajero);
 
         jCbxVentas.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -922,11 +934,21 @@ public class Ventas extends javax.swing.JInternalFrame {
     private void jCbxVentasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCbxVentasItemStateChanged
         limpiarTablaVentas();
         listarVentas();
+        jBtnAnular.setEnabled(false);
     }//GEN-LAST:event_jCbxVentasItemStateChanged
 
     private void jBtnAnularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAnularActionPerformed
         anularVenta();
     }//GEN-LAST:event_jBtnAnularActionPerformed
+
+    private void jTblVentasCajeroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblVentasCajeroMouseClicked
+        String est = jTblVentasCajero.getValueAt(jTblVentasCajero.getSelectedRow(), 5).toString();
+        if (est.equals("ANULADO")) {
+            jBtnAnular.setEnabled(false);
+        }else{
+            jBtnAnular.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTblVentasCajeroMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

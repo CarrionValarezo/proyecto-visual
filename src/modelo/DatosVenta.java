@@ -14,6 +14,7 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import vista.Login;
 
 /**
  *
@@ -110,12 +111,14 @@ public class DatosVenta {
     public List listar(String estado) {
 
         List<Venta> ListarVen = new ArrayList();
-        String sql = "SELECT * FROM VENTAS WHERE EST_VEN=?";
+        Login login = new Login();
+        String sql = "SELECT * FROM VENTAS WHERE EST_VEN=? AND CED_USU_PER=?";
 
         try {
             con = cn.conectar();
             ps = con.prepareStatement(sql);
             ps.setString(1, estado);
+            ps.setString(2, login.cedula);
             rs = ps.executeQuery();
 
             while (rs.next()) {

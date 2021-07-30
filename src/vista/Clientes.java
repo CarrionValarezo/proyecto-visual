@@ -39,7 +39,7 @@ public class Clientes extends javax.swing.JInternalFrame {
             cli.setApellido(jTxtApellidoCliente.getText());
             cli.setCorreo(jTxtCorreoCliente.getText());
             cli.setEstado("ACTIVO");
-            
+
             if ("".equals(jTxtDireccionCliente.getText())) {
                 cli.setDireccion("SIN DIRECCIÓN");
             } else {
@@ -51,13 +51,32 @@ public class Clientes extends javax.swing.JInternalFrame {
                 cli.setTelefono(jTxtTelefonoCliente.getText());
             }
             if (cliente.comprobar(jTxtIdentificacionCliente.getText()) == false) {
-                cliente.insertar(cli);
 
-                limpiarCampos();
-                bloquearBotones();
-                bloquearCampos();
-                limpiarTabla();
-                listarClientes();
+                if (jCbxTipoIdentificacion.getSelectedItem().equals("RUC")) {
+                    if (jTxtIdentificacionCliente.getText().length() == 13) {
+                        cliente.insertar(cli);
+
+                        limpiarCampos();
+                        bloquearBotones();
+                        bloquearCampos();
+                        limpiarTabla();
+                        listarClientes();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "El RUC debe contener 13 digitos");
+                    }
+                }else{
+                    if (jTxtIdentificacionCliente.getText().length() == 10) {
+                        cliente.insertar(cli);
+
+                        limpiarCampos();
+                        bloquearBotones();
+                        bloquearCampos();
+                        limpiarTabla();
+                        listarClientes();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "La Cédula debe contener 10 digitos");
+                    }
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Ya existe un cliente registrado con esa identificación");
             }
