@@ -5,7 +5,7 @@
 		<![CDATA[select p.id_pro, p.cod_bar_pro, p.nom_pro, sum(dv.can_pro) as can_ven
 from productos p, detalle_ventas dv, ventas v
 where p.id_pro = dv.id_pro_per
-and week(v.fec_ven) between week($P{fecha}) and week($P{fecha})+1
+and week(v.fec_ven) = week($P{fecha})
 group by cod_bar_pro
 order by sum(dv.can_pro) desc;]]>
 	</queryString>
@@ -37,7 +37,7 @@ order by sum(dv.can_pro) desc;]]>
 				<textElement textAlignment="Center">
 					<font size="26" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Classic template]]></text>
+				<text><![CDATA[Reporte más vendidos por semana]]></text>
 			</staticText>
 		</band>
 	</title>

@@ -5,13 +5,27 @@
  */
 package vista;
 
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import static java.lang.System.exit;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import modelo.Conexion;
 import modelo.DatosLogin;
@@ -28,82 +42,100 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class Menu extends javax.swing.JFrame {
 
-    Icon icono = new ImageIcon(getClass().getResource("/imagenes/cajero.png"));
-    Icon icono1 = new ImageIcon(getClass().getResource("/imagenes/admin.png"));
-    DatosLogin login = new DatosLogin();
+	Icon icono = new ImageIcon(getClass().getResource("/imagenes/cajero.png"));
+	Icon icono1 = new ImageIcon(getClass().getResource("/imagenes/admin.png"));
+	DatosLogin login = new DatosLogin();
 
-    public Menu() {
-        initComponents();
-        this.setTitle("Sistema de Facturación");
-        setExtendedState(MAXIMIZED_BOTH);
-    }
+	public Menu() {
+		initComponents();
+		this.setTitle("Sistema de Facturación");
+		setExtendedState(MAXIMIZED_BOTH);
+	}
 
-    public Menu(int rol, String estado) {
-        initComponents();
-        this.setTitle("Sistema de Facturación");
-        setExtendedState(MAXIMIZED_BOTH);
-        if (estado.equals("ACTIVO")) {
-            if (rol == 1) {
-                jMnuInventario.setEnabled(true);
-                jMnuVentas.setEnabled(true);
-                jMnuReportes.setEnabled(true);
-                jMnuAcceso.setEnabled(true);
-                jMnuSalir.setEnabled(true);
-                JOptionPane.showMessageDialog(null, "¡BIENVENIDO "+login.infoUsuario[0]+" "+login.infoUsuario[1]+"!", "Mensaje de Bienvenida", JOptionPane.PLAIN_MESSAGE, icono1);
-            }
-            if (rol == 2) {
-                jMnuInventario.setEnabled(false);
-                jMnuVentas.setEnabled(true);
-                jMnuReportes.setEnabled(false);
-                jMnuAcceso.setEnabled(false);
-                jMnuSalir.setEnabled(true);
-                JOptionPane.showMessageDialog(null, "¡BIENVENIDO "+login.infoUsuario[0]+" "+login.infoUsuario[1]+"!", "Mensaje de Bienvenida", JOptionPane.PLAIN_MESSAGE, icono);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "El usuario se encuentra inhabilitado, por favor contactese con el administrador.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            System.exit(0);
-        }
-    }
-    
-    
-	private void reporteMasVendidos(){
+	public Menu(int rol, String estado) {
+		initComponents();
+		this.setTitle("Sistema de Facturación");
+		setExtendedState(MAXIMIZED_BOTH);
+		if (estado.equals("ACTIVO")) {
+			if (rol == 1) {
+				jMnuInventario.setEnabled(true);
+				jMnuVentas.setEnabled(true);
+				jMnuReportes.setEnabled(true);
+				jMnuAcceso.setEnabled(true);
+				jMnuSalir.setEnabled(true);
+				JOptionPane.showMessageDialog(null, "¡BIENVENIDO " + login.infoUsuario[0] + " " + login.infoUsuario[1] + "!", "Mensaje de Bienvenida", JOptionPane.PLAIN_MESSAGE, icono1);
+			}
+			if (rol == 2) {
+				jMnuInventario.setEnabled(false);
+				jMnuVentas.setEnabled(true);
+				jMnuReportes.setEnabled(false);
+				jMnuAcceso.setEnabled(false);
+				jMnuSalir.setEnabled(true);
+				JOptionPane.showMessageDialog(null, "¡BIENVENIDO " + login.infoUsuario[0] + " " + login.infoUsuario[1] + "!", "Mensaje de Bienvenida", JOptionPane.PLAIN_MESSAGE, icono);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "El usuario se encuentra inhabilitado, por favor contactese con el administrador.", "Aviso", JOptionPane.WARNING_MESSAGE);
+			System.exit(0);
+		}
+	}
+
+	private void reporteMasVendidos() {
 		try {
-            Conexion cc = new Conexion();
-            JasperReport reporte = JasperCompileManager.compileReport("c:/reportes/reporteMasVendidos.jrxml");
-            JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
-            JasperViewer.viewReport(print, false);
-        } catch (JRException ex) {
-            JOptionPane.showMessageDialog(null, "Ocurrio un error al cargar su reporte");
-        }
+			Conexion cc = new Conexion();
+			JasperReport reporte = JasperCompileManager.compileReport("c:/reportes/reporteMasVendidos.jrxml");
+			JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
+			JasperViewer.viewReport(print, false);
+		} catch (JRException ex) {
+			JOptionPane.showMessageDialog(null, "Ocurrio un error al cargar su reporte");
+		}
 	}
 
-	private void reporteSinStock(){
-        try {
-            Conexion cc = new Conexion();
-            JasperReport reporte = JasperCompileManager.compileReport("c:/reportes/reporteNoStock.jrxml");
-            JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
-			JasperViewer.viewReport(print,false);
-        } catch (JRException ex) {
-            JOptionPane.showMessageDialog(null, "Ocurrio un error al cargar su reporte");
-        }
-	}
-
-	private void reporteMasVenSemana(){ 
-        // TODO add your handling code here:
+	private void reporteSinStock() {
 		try {
-			String input = JOptionPane.showInputDialog(null, "Ingrese una fecha en el formato:\nAAAA-MM-DD");
-			Map fecha = new HashMap(); 
-			fecha.put("fecha", input); 
-            Conexion cc = new Conexion();
-            JasperReport reporte = JasperCompileManager.compileReport("c:/reportes/reporteMasVenSemana.jrxml");
-            JasperPrint print = JasperFillManager.fillReport(reporte, fecha, cc.conectar());
-            JasperViewer.viewReport(print, false);
-        } catch (JRException ex) {
-            JOptionPane.showMessageDialog(null, "Ingreso una fecha incorrecta");
-        }
+			Conexion cc = new Conexion();
+			JasperReport reporte = JasperCompileManager.compileReport("c:/reportes/reporteNoStock.jrxml");
+			JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
+			JasperViewer.viewReport(print, false);
+		} catch (JRException ex) {
+			JOptionPane.showMessageDialog(null, "Ocurrio un error al cargar su reporte");
+		}
 	}
-    
-    @SuppressWarnings("unchecked")
+
+	private void reporteMasVenSemana() {
+		// TODO add your handling code here:
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+		JFrame calendarioFrame = new JFrame();
+		JCalendar calendar = new JCalendar();
+		JButton jBtnReporte = new JButton("Ver Reporte");
+		jBtnReporte.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				String fechaFormateada = ""; 
+				Date fechaCalendario = calendar.getDate();
+				fechaFormateada = formato.format(fechaCalendario); 
+				Map fecha = new HashMap();
+				fecha.put("fecha", fechaFormateada);
+				Conexion cc = new Conexion();
+				JasperReport reporte;
+				try {
+					reporte = JasperCompileManager.compileReport("c:/reportes/reporteMasVenSemana.jrxml");
+					JasperPrint print = JasperFillManager.fillReport(reporte, fecha, cc.conectar());
+					JasperViewer.viewReport(print, false);
+				} catch (JRException ex) {
+					Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
+		});
+		FlowLayout fl = new FlowLayout(FlowLayout.LEFT);
+		calendarioFrame.setSize(new Dimension(400, 300));
+		calendarioFrame.setLayout(fl);
+		calendarioFrame.add(calendar);
+		calendarioFrame.add(jBtnReporte);
+		calendarioFrame.setVisible(true);
+
+	}
+
+	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -302,9 +334,9 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        Categorias cat = new Categorias();
-        jDskMenu.add(cat);
-        cat.setVisible(true);
+		Categorias cat = new Categorias();
+		jDskMenu.add(cat);
+		cat.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMnuReporteStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuReporteStockActionPerformed
@@ -312,21 +344,21 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMnuReporteStockActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        Productos pro = new Productos();
-        jDskMenu.add(pro);
-        pro.setVisible(true);
+		Productos pro = new Productos();
+		jDskMenu.add(pro);
+		pro.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMnuClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuClientesActionPerformed
-        Clientes cli = new Clientes();
-        jDskMenu.add(cli);
-        cli.setVisible(true);
+		Clientes cli = new Clientes();
+		jDskMenu.add(cli);
+		cli.setVisible(true);
     }//GEN-LAST:event_jMnuClientesActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        Usuarios usu = new Usuarios();
-        jDskMenu.add(usu);
-        usu.setVisible(true);
+		Usuarios usu = new Usuarios();
+		jDskMenu.add(usu);
+		usu.setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuSalirActionPerformed
@@ -338,24 +370,24 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMnuSalirMouseClicked
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        System.exit(0);
+		System.exit(0);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        Login log = new Login();
-        dispose();
-        log.setVisible(true);
+		Login log = new Login();
+		dispose();
+		log.setVisible(true);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        // TODO add your handling code here:
-		Ventas v = new Ventas(); 
-		jDskMenu.add(v); 
+		// TODO add your handling code here:
+		Ventas v = new Ventas();
+		jDskMenu.add(v);
 		v.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMnuReporteMasVendidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuReporteMasVendidosActionPerformed
-        // TODO add your handling code here:
+		// TODO add your handling code here:
 		reporteMasVendidos();
     }//GEN-LAST:event_jMnuReporteMasVendidosActionPerformed
 
@@ -363,41 +395,40 @@ public class Menu extends javax.swing.JFrame {
 		reporteMasVenSemana();
     }//GEN-LAST:event_jMnuMasVenSemanaActionPerformed
 
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String args[]) {
+		/* Set the Nimbus look and feel */
+		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+		/* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+		 */
+		try {
+			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					javax.swing.UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (ClassNotFoundException ex) {
+			java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (InstantiationException ex) {
+			java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (IllegalAccessException ex) {
+			java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+			java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		}
+		//</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Menu().setVisible(true);
-            }
-        });
-    }
+		/* Create and display the form */
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				new Menu().setVisible(true);
+			}
+		});
+	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JDesktopPane jDskMenu;
