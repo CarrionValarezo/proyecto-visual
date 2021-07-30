@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<queryString language="SQL">
+	<queryString>
 		<![CDATA[select p.id_pro, p.cod_bar_pro, p.nom_pro, sum(dv.can_pro) as can_ven
 from productos p, detalle_ventas dv
 where p.id_pro = dv.id_pro_per
-group by cod_bar_pro
+group by dv.ID_PRO_PER
 order by sum(dv.can_pro) desc;]]>
 	</queryString>
 	<field name="id_pro" class="java.lang.Integer">

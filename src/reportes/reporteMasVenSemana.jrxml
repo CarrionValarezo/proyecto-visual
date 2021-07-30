@@ -5,8 +5,9 @@
 		<![CDATA[select p.id_pro, p.cod_bar_pro, p.nom_pro, sum(dv.can_pro) as can_ven
 from productos p, detalle_ventas dv, ventas v
 where p.id_pro = dv.id_pro_per
+and v.num_fac = dv.num_fac_per
 and week(v.fec_ven) = week($P{fecha})
-group by cod_bar_pro
+group by dv.id_pro_per
 order by sum(dv.can_pro) desc;]]>
 	</queryString>
 	<field name="id_pro" class="java.lang.Integer">
@@ -25,7 +26,7 @@ order by sum(dv.can_pro) desc;]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="58" splitType="Stretch">
+		<band height="83" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="8" width="555" height="1"/>
 			</line>
@@ -33,7 +34,7 @@ order by sum(dv.can_pro) desc;]]>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="51" width="555" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="65" y="13" width="424" height="35"/>
+				<reportElement x="65" y="13" width="424" height="70"/>
 				<textElement textAlignment="Center">
 					<font size="26" isBold="true"/>
 				</textElement>
