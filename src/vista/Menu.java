@@ -8,6 +8,8 @@ package vista;
 import java.awt.Graphics;
 import java.awt.Image;
 import static java.lang.System.exit;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -64,6 +66,42 @@ public class Menu extends javax.swing.JFrame {
     }
     
     
+	private void reporteMasVendidos(){
+		try {
+            Conexion cc = new Conexion();
+            JasperReport reporte = JasperCompileManager.compileReport("c:/reportes/reporteMasVendidos.jrxml");
+            JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
+            JasperViewer.viewReport(print, false);
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error al cargar su reporte");
+        }
+	}
+
+	private void reporteSinStock(){
+        try {
+            Conexion cc = new Conexion();
+            JasperReport reporte = JasperCompileManager.compileReport("c:/reportes/reporteNoStock.jrxml");
+            JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
+			JasperViewer.viewReport(print,false);
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error al cargar su reporte");
+        }
+	}
+
+	private void reporteMasVenSemana(){ 
+        // TODO add your handling code here:
+		try {
+			String input = JOptionPane.showInputDialog(null, "Ingrese una fecha en el formato:\nAAAA-MM-DD");
+			Map fecha = new HashMap(); 
+			fecha.put("fecha", input); 
+            Conexion cc = new Conexion();
+            JasperReport reporte = JasperCompileManager.compileReport("c:/reportes/reporteMasVenSemana.jrxml");
+            JasperPrint print = JasperFillManager.fillReport(reporte, fecha, cc.conectar());
+            JasperViewer.viewReport(print, false);
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Ingreso una fecha incorrecta");
+        }
+	}
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -85,6 +123,8 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMnuReportes = new javax.swing.JMenu();
         jMnuReporteStock = new javax.swing.JMenuItem();
+        jMnuReporteMasVendidos = new javax.swing.JMenuItem();
+        jMnuMasVenSemana = new javax.swing.JMenuItem();
         jMnuAcceso = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMnuSalir = new javax.swing.JMenu();
@@ -173,6 +213,22 @@ public class Menu extends javax.swing.JFrame {
         });
         jMnuReportes.add(jMnuReporteStock);
 
+        jMnuReporteMasVendidos.setText("REPORTE MAS VENDIDOS");
+        jMnuReporteMasVendidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMnuReporteMasVendidosActionPerformed(evt);
+            }
+        });
+        jMnuReportes.add(jMnuReporteMasVendidos);
+
+        jMnuMasVenSemana.setText("REPORTE MAS VENDIDOS POR SEMANA");
+        jMnuMasVenSemana.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMnuMasVenSemanaActionPerformed(evt);
+            }
+        });
+        jMnuReportes.add(jMnuMasVenSemana);
+
         jMenuBar1.add(jMnuReportes);
 
         jMnuAcceso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/acceso.png"))); // NOI18N
@@ -250,14 +306,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMnuReporteStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuReporteStockActionPerformed
-        try {
-            Conexion cc = new Conexion();
-            JasperReport reporte = JasperCompileManager.compileReport("c:/reportes/ReporteStock.jrxml");
-            JasperPrint print = JasperFillManager.fillReport(reporte, null, cc.conectar());
-            JasperViewer.viewReport(print);
-        } catch (JRException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
+		reporteSinStock();
     }//GEN-LAST:event_jMnuReporteStockActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -302,6 +351,16 @@ public class Menu extends javax.swing.JFrame {
 		jDskMenu.add(v); 
 		v.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMnuReporteMasVendidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuReporteMasVendidosActionPerformed
+        // TODO add your handling code here:
+		reporteMasVendidos();
+    }//GEN-LAST:event_jMnuReporteMasVendidosActionPerformed
+
+    private void jMnuMasVenSemanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuMasVenSemanaActionPerformed
+		reporteMasVenSemana();
+    }//GEN-LAST:event_jMnuMasVenSemanaActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -350,6 +409,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenu jMnuAcceso;
     private javax.swing.JMenuItem jMnuClientes;
     private javax.swing.JMenu jMnuInventario;
+    private javax.swing.JMenuItem jMnuMasVenSemana;
+    private javax.swing.JMenuItem jMnuReporteMasVendidos;
     private javax.swing.JMenuItem jMnuReporteStock;
     private javax.swing.JMenu jMnuReportes;
     private javax.swing.JMenu jMnuSalir;

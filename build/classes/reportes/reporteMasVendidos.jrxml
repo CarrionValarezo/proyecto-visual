@@ -49,28 +49,28 @@ order by sum(dv.can_pro) desc;]]>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[id_pro]]></text>
+				<text><![CDATA[ID]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="138" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[cod_bar_pro]]></text>
+				<text><![CDATA[CODIGO DE BARRAS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="276" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[nom_pro]]></text>
+				<text><![CDATA[NOMBRE PRODUCTO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="414" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[can_ven]]></text>
+				<text><![CDATA[CANTIDAD DE VENTAS]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -153,37 +153,6 @@ order by sum(dv.can_pro) desc;]]>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="193">
-			<stackedBar3DChart>
-				<chart>
-					<reportElement x="0" y="0" width="555" height="193"/>
-					<chartTitle/>
-					<chartSubtitle/>
-					<chartLegend/>
-				</chart>
-				<categoryDataset>
-					<categorySeries>
-						<seriesExpression><![CDATA[$F{can_ven}]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{nom_pro}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{can_ven}]]></valueExpression>
-					</categorySeries>
-				</categoryDataset>
-				<bar3DPlot>
-					<plot/>
-					<categoryAxisFormat>
-						<axisFormat>
-							<labelFont/>
-							<tickLabelFont/>
-						</axisFormat>
-					</categoryAxisFormat>
-					<valueAxisFormat>
-						<axisFormat>
-							<labelFont/>
-							<tickLabelFont/>
-						</axisFormat>
-					</valueAxisFormat>
-				</bar3DPlot>
-			</stackedBar3DChart>
-		</band>
+		<band height="193"/>
 	</summary>
 </jasperReport>

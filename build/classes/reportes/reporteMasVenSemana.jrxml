@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<queryString language="SQL">
+	<parameter name="fecha" class="java.lang.String"/>
+	<queryString>
 		<![CDATA[select p.id_pro, p.cod_bar_pro, p.nom_pro, sum(dv.can_pro) as can_ven
-from productos p, detalle_ventas dv
+from productos p, detalle_ventas dv, ventas v
 where p.id_pro = dv.id_pro_per
+and week(v.fec_ven) between week($P{fecha}) and week($P{fecha})+1
 group by cod_bar_pro
 order by sum(dv.can_pro) desc;]]>
 	</queryString>
@@ -35,7 +37,7 @@ order by sum(dv.can_pro) desc;]]>
 				<textElement textAlignment="Center">
 					<font size="26" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Productos más vendidos.]]></text>
+				<text><![CDATA[Classic template]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -49,28 +51,28 @@ order by sum(dv.can_pro) desc;]]>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[ID]]></text>
+				<text><![CDATA[id_pro]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="138" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[CODIGO DE BARRAS]]></text>
+				<text><![CDATA[cod_bar_pro]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="276" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[NOMBRE PRODUCTO]]></text>
+				<text><![CDATA[nom_pro]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="414" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[CANTIDAD DE VENTAS]]></text>
+				<text><![CDATA[can_ven]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -153,6 +155,6 @@ order by sum(dv.can_pro) desc;]]>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="193"/>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>

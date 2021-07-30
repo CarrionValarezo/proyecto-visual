@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<queryString language="SQL">
-		<![CDATA[select p.id_pro, p.cod_bar_pro, p.nom_pro, sum(dv.can_pro) as can_ven
-from productos p, detalle_ventas dv
-where p.id_pro = dv.id_pro_per
-group by cod_bar_pro
-order by sum(dv.can_pro) desc;]]>
+		<![CDATA[select id_pro, cod_bar_pro, nom_pro
+from productos
+where can_pro = 0;]]>
 	</queryString>
 	<field name="id_pro" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -14,9 +12,6 @@ order by sum(dv.can_pro) desc;]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="nom_pro" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="can_ven" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -35,7 +30,7 @@ order by sum(dv.can_pro) desc;]]>
 				<textElement textAlignment="Center">
 					<font size="26" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Productos más vendidos.]]></text>
+				<text><![CDATA[Productos sin stock]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -45,64 +40,50 @@ order by sum(dv.can_pro) desc;]]>
 	<columnHeader>
 		<band height="18" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
+				<reportElement mode="Opaque" x="0" y="0" width="185" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[ID]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="138" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
+				<reportElement mode="Opaque" x="185" y="0" width="185" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[CODIGO DE BARRAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="276" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
+				<reportElement mode="Opaque" x="370" y="0" width="185" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[NOMBRE PRODUCTO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="414" y="0" width="138" height="18" forecolor="#FFFFFF" backcolor="#999999"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[CANTIDAD DE VENTAS]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="138" height="20"/>
+				<reportElement x="0" y="0" width="185" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{id_pro}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="138" y="0" width="138" height="20"/>
+				<reportElement x="185" y="0" width="185" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{cod_bar_pro}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="276" y="0" width="138" height="20"/>
+				<reportElement x="370" y="0" width="185" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nom_pro}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="414" y="0" width="138" height="20"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{can_ven}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -153,6 +134,6 @@ order by sum(dv.can_pro) desc;]]>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="193"/>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>
